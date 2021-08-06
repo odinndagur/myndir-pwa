@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="container">
+    <div v-if="loaded">
     <div class="header"><h2>🎥</h2></div>
 
     <div class="item movieInfo">
@@ -87,14 +88,24 @@
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div> -->
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "Home",
+  mounted() {
+    console.log("mounted");
+    this.searchMovie(this.movieQuery);
+    this.$nextTick(() => {
+        // Fires before full page is rendered
+        this.loaded = true;
+    })
+},
   data() {
     return {
+      loaded:false,
       movieQuery: "Three Billboards Outside Ebbing, Missouri",
       movie: {},
       foto: "",
