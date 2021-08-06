@@ -18,7 +18,7 @@
         <label for="movieName" class="mr-2">Movie name</label><br />
         <input
           v-model="movieQuery"
-          type="text"
+          type="search"
           class="form-control col-md-30"
           id="movieInput"
           placeholder="Three Billboards Outside Ebbing, Missouri"
