@@ -19,6 +19,7 @@
         <input
           v-model="movieQuery"
           type="search"
+          inputmode="search"
           class="form-control col-md-30"
           id="movieInput"
           placeholder="Three Billboards Outside Ebbing, Missouri"
