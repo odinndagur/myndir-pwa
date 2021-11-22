@@ -1,78 +1,50 @@
 <template>
   <div id="app" class="container">
     <div v-if="loaded">
-    <div class="header"><h2>🎥</h2></div>
+      <div class="header"><h2>🎥</h2></div>
 
-    <div class="item movieInfo">
-      <div class="poster"><img v-if="foto" :src="foto" /></div>
-      <div class="text">
-        <h5 class="movie-title">{{ title }}</h5>
-        <h5 class="year">{{ year }}</h5>
-        <h6 class="genre">{{ genre }}</h6>
-        <p class="plot">{{ plot }}</p>
-      </div>
-    </div>
-
-    <div class="item input">
-      <form @submit.prevent="searchMovie()">
-        <label for="movieName" class="mr-2">Movie name</label><br />
-        <input
-          v-model="movieQuery"
-          type="search"
-          inputmode="search"
-          class="form-control col-md-30"
-          id="movieInput"
-          placeholder="Three Billboards Outside Ebbing, Missouri"
-        />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- <div class="d-flex justify-content-md-center mt-5">
-    <div class="float-md-left"><img v-if="foto" :src="foto" width="1rem" alt /></div>
-
-    <div class="">
-      <div class="card-body">
-        <h5 class="card-title">{{ title }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted"> {{ genre }} </h6>
-        <p class="card-text">{{ plot }}</p>
-        <ul class="list-group mb-3">
-        <li class="list-group-item">Director: {{ director }}</li>
-        <li class="list-group-item">Year: {{ year }}</li>
-        </ul>
-
-        <a v-if="imdbLink" :href="imdbLink" class="card-link" target="_blank">IMDB link</a>
-        <a v-if="imdbLink" href="#" class="card-link">Another link</a>
-      </div>
-    </div>
-  </div> -->
-    <!-- <p v-if="movie" class="d-flex justify-content-md-center mt-3">You are adding&nbsp; <a v-bind:href="imdbLink"><b>{{ title }}</b></a>&nbsp; by director&nbsp;  <b>{{ director }}</b>, released in&nbsp;<b>{{ year }}</b>.</p> -->
-
-    <!-- <div class="row">
-  <div class="mt-3 col-12">
-    <div class="d-flex justify-content-md-center">
-      <form class="form-inline" @submit.prevent=searchMovie()>
-        <div class="form-group mx-sm-3 mb-2">
-          <label for="movieName" class="mr-2">Movie name</label>
-          <input v-model="movieQuery" type="text" class="form-control col-md-30" id="movieInput" placeholder="Three Billboards Outside Ebbing, Missouri">
+      <div class="item movieInfo">
+        <div class="poster"><img v-if="foto" :src="foto" /></div>
+        <div class="text">
+          <h5 class="movie-title">{{ title }}</h5>
+          <h5 class="year">{{ year }}</h5>
+          <h6 class="genre">{{ genre }}</h6>
+          <p class="plot">{{ plot }}</p>
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Submit</button>
-      </form>
-    </div>
-  </div>
-</div> -->
+      </div>
 
-    <ul style="list-style: none">
-      <li v-for="(item, index) in moviesList" :key="item">
-        <span>{{index+1}}</span><a v-on:click="selectMovie(index)">{{item.Title}}</a>
-        <!-- <form class="form-inline" @submit.prevent="selectMovie(index)">
+      <div class="item input">
+        <form @submit.prevent="searchMovie()">
+          <label for="movieName" class="mr-2">Movie name</label><br />
+          <input
+            v-model="movieQuery"
+            type="search"
+            inputmode="search"
+            class="form-control col-md-30"
+            id="movieInput"
+            placeholder="Three Billboards Outside Ebbing, Missouri"
+            aria-describedby="movieSearchHelp"
+          />
+          <small id="movieSearchHelp" class="form-text text-muted">Search for a movie</small>
+          <!-- <button type="submit">Submit</button> -->
+        </form>
+      </div>
+
+
+      <!-- <p v-if="movie" class="d-flex justify-content-md-center mt-3">You are adding&nbsp; <a v-bind:href="imdbLink"><b>{{ title }}</b></a>&nbsp; by director&nbsp;  <b>{{ director }}</b>, released in&nbsp;<b>{{ year }}</b>.</p> -->
+
+      <ul style="list-style: none">
+        <li v-for="(item, index) in moviesList" :key="item">
+          <span>{{ index + 1 }}</span
+          ><a v-on:click="selectMovie(index)">{{ item.Title }}</a>
+          <!-- <form class="form-inline" @submit.prevent="selectMovie(index)">
           <button type="submit" class="">👉</button>
           <label for="movieName" class="mr-2">{{ item.Title }}</label>
         </form> -->
-      </li>
-    </ul>
+        </li>
+      </ul>
 
-    <!-- <div class="item search-box">
+      <!-- <div class="item search-box">
       <form @submit.prevent="searchMovie()">
         <div class="form-group">
           <label for="movieName">Movie name</label>
@@ -100,13 +72,14 @@ export default {
     console.log("mounted");
     this.searchMovie(this.movieQuery);
     this.$nextTick(() => {
-        // Fires before full page is rendered
-        this.loaded = true;
-    })
-},
+      // Fires before full page is rendered
+      this.loaded = true;
+    });
+  },
   data() {
     return {
-      loaded:false,
+      loaded: false,
+      selectedIndex: -1,
       movieQuery: "Three Billboards Outside Ebbing, Missouri",
       movie: {},
       foto: "",
@@ -146,6 +119,7 @@ export default {
       this.movieQuery = "";
     },
     selectMovie(index) {
+      this.selectedIndex = index;
       this.movie = this.moviesList[index];
       fetch("https://www.omdbapi.com/?apikey=2d1ccbe&i=" + this.movie.imdbID)
         .then((response) => {
@@ -214,22 +188,22 @@ input {
 ul {
   padding-top: 1rem;
   font-size: 1.5rem;
-  text-align:left;
+  text-align: left;
 }
 
-ul>li:nth-child(even){
-    color:grey
+ul > li:nth-child(even) {
+  color: grey;
 }
 
 ul button {
   margin: 0 10px;
 }
 
-ul a{
+ul a {
   margin: 0 10px;
 }
 
-ul a:hover{
+ul a:hover {
   /* display:none; */
 }
 .poster {
